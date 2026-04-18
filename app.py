@@ -120,9 +120,9 @@ div[data-testid="stRadio"] { gap: 4px; }
     font-weight: 600 !important;
     font-size: 0.88rem !important;
     padding: 0.5rem 1rem !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    word-break: break-word !important;
     width: 100% !important;
     transition: all 0.15s ease !important;
 }
