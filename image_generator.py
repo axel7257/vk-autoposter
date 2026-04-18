@@ -280,19 +280,17 @@ def generate_image(topic: str, style_key: str, size_key: str = "1:1", post_text:
 
 
 def _get_font(size: int, bold: bool = False):
-    """Загружает шрифт с поддержкой кириллицы (macOS и Linux)."""
+    """Загружает шрифт с поддержкой кириллицы."""
     font_paths = [
+        # Встроенный шрифт проекта (всегда работает)
+        str(Path(__file__).parent / "fonts" / "NotoSans.ttf"),
         # macOS
         "/System/Library/Fonts/Helvetica.ttc",
         "/Library/Fonts/Arial.ttf",
         "/System/Library/Fonts/Arial.ttf",
-        # Linux (Ubuntu/Debian — Streamlit Cloud)
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        # Linux
         "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
         "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
-        "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
-        "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
     ]
     for path in font_paths:
         if Path(path).exists():
