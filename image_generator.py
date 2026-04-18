@@ -280,12 +280,19 @@ def generate_image(topic: str, style_key: str, size_key: str = "1:1", post_text:
 
 
 def _get_font(size: int, bold: bool = False):
-    """Пытается загрузить системный шрифт."""
+    """Загружает шрифт с поддержкой кириллицы (macOS и Linux)."""
     font_paths = [
+        # macOS
         "/System/Library/Fonts/Helvetica.ttc",
-        "/System/Library/Fonts/Arial.ttf",
         "/Library/Fonts/Arial.ttf",
-        "/System/Library/Fonts/SF Pro Display.ttf",
+        "/System/Library/Fonts/Arial.ttf",
+        # Linux (Ubuntu/Debian — Streamlit Cloud)
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+        "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
+        "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
     ]
     for path in font_paths:
         if Path(path).exists():
