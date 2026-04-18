@@ -1,0 +1,12 @@
+.env
+.streamlit/secrets.toml
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+generated_images/
+history.json
+content_plan.json
+*.log
+venv/
+.venv/

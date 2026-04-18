@@ -1,0 +1,41 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/anton/vk_autoposter/.claude/hooks/load-context.sh",
+            "timeout": 15,
+            "statusMessage": "Загружаю память проекта..."
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/anton/vk_autoposter/.claude/hooks/save-summary.sh",
+            "async": true,
+            "timeout": 30,
+            "statusMessage": "Сохраняю лог сессии..."
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/anton/vk_autoposter/.claude/hooks/precompact.sh",
+            "timeout": 15,
+            "statusMessage": "Сохраняю состояние перед сжатием..."
+          }
+        ]
+      }
+    ]
+  }
+}
