@@ -215,7 +215,7 @@ div[data-testid="stSpinner"] p { color: #666 !important; }
 /* Скрыть футер Streamlit */
 footer { display: none !important; }
 #MainMenu { display: none !important; }
-header { display: none !important; }
+header[data-testid="stHeader"] { background: transparent !important; }
 </style>
 """, unsafe_allow_html=True)
 
