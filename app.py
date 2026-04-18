@@ -213,10 +213,12 @@ div[data-testid="stCaptionContainer"] p { color: #888 !important; font-size: 0.8
 /* Spinner */
 div[data-testid="stSpinner"] p { color: #666 !important; }
 
-/* Скрыть футер Streamlit */
+/* Скрыть футер и шапку Streamlit */
 footer { display: none !important; }
 #MainMenu { display: none !important; }
 header[data-testid="stHeader"] { background: transparent !important; }
+div[data-testid="stSidebarCollapsedControl"] { display: none !important; }
+button[data-testid="collapsedControl"] { display: none !important; }
 </style>
 """, unsafe_allow_html=True)
 
