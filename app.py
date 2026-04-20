@@ -18,6 +18,7 @@ for _k in ["ANTHROPIC_API_KEY", "REPLICATE_API_TOKEN", "SUPABASE_URL", "SUPABASE
         except Exception:
             pass
 
+import generate_post as _gp
 from generate_post import generate_post, suggest_topics, PLATFORMS, GOALS, TONE_INSTRUCTIONS
 from content_plan import generate_plan, generate_topics_for_plan, GOAL_LABELS, PLATFORM_LABELS
 from image_generator import generate_image, apply_overlay, STYLES, OVERLAY_OPTIONS, IMAGE_SIZES, PLATFORM_DEFAULT_SIZE, STYLE_DEFAULT_REALISM
@@ -321,6 +322,8 @@ with tab_create:
                 st.session_state["shown_topics"] = [t["topic"] for t in topics]
             else:
                 st.warning("Не удалось найти темы, попробуй ещё раз.")
+                if _gp.suggest_topics_last_error:
+                    st.error(f"Ошибка: {_gp.suggest_topics_last_error}")
 
     if more_btn:
         with st.spinner("Ищу другие темы..."):
@@ -331,6 +334,8 @@ with tab_create:
                 st.session_state["shown_topics"] = exclude + [t["topic"] for t in topics]
             else:
                 st.warning("Не удалось найти темы, попробуй ещё раз.")
+                if _gp.suggest_topics_last_error:
+                    st.error(f"Ошибка: {_gp.suggest_topics_last_error}")
 
     if st.session_state.get("suggested_topics"):
         st.markdown("**Актуальные темы — выбери или введи свою:**")

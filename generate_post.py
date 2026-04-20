@@ -195,6 +195,9 @@ TONE_INSTRUCTIONS = {
 }
 
 
+suggest_topics_last_error: str = ""
+
+
 def suggest_topics(platform: str, theme: str = "", exclude: list = None) -> list:
     """Ищет 5 актуальных вирусных тем через веб-поиск Claude."""
     platform_name = PLATFORMS.get(platform, "ВКонтакте")
@@ -205,6 +208,8 @@ def suggest_topics(platform: str, theme: str = "", exclude: list = None) -> list
     ) if exclude else ""
 
     import json, re, sys
+    global suggest_topics_last_error
+    suggest_topics_last_error = ""
 
     try:
         response = client.messages.create(
@@ -238,7 +243,7 @@ def suggest_topics(platform: str, theme: str = "", exclude: list = None) -> list
     # Fallback — без веб-поиска, из знаний Claude
     try:
         response = client.messages.create(
-            model="claude-sonnet-4-6",
+            model="claude-3-5-haiku-20241022",
             max_tokens=512,
             messages=[{
                 "role": "user",
@@ -257,6 +262,7 @@ def suggest_topics(platform: str, theme: str = "", exclude: list = None) -> list
         if match:
             return json.loads(match.group())
     except Exception as _e2:
+        suggest_topics_last_error = str(_e2)
         print(f"[suggest_topics] fallback failed: {_e2}", file=sys.stderr)
 
     return []
