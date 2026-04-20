@@ -204,11 +204,14 @@ def suggest_topics(platform: str, theme: str = "", exclude: list = None) -> list
         + "\n".join(f"- {t}" for t in exclude)
     ) if exclude else ""
 
+    import json, re, sys
+
     try:
         response = client.messages.create(
             model="claude-sonnet-4-6",
             max_tokens=1024,
             tools=[{"type": "web_search_20250305", "name": "web_search"}],
+            extra_headers={"anthropic-beta": "web-search-2025-03-05"},
             messages=[{
                 "role": "user",
                 "content": (
@@ -225,39 +228,37 @@ def suggest_topics(platform: str, theme: str = "", exclude: list = None) -> list
                 )
             }]
         )
-        import json, re
         text = "".join(block.text for block in response.content if hasattr(block, "text"))
         match = re.search(r'\[.*?\]', text, re.DOTALL)
         if match:
             return json.loads(match.group())
     except Exception as _e1:
-        import sys
         print(f"[suggest_topics] web_search failed: {_e1}", file=sys.stderr)
 
     # Fallback — без веб-поиска, из знаний Claude
-    response = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=512,
-        messages=[{
-            "role": "user",
-            "content": (
-                f"Предложи 5 актуальных тем для постов психотерапевта{theme_context} "
-                f"для площадки {platform_name}. Темы должны быть конкретными (5-10 слов), "
-                f"резонировать с широкой аудиторией, вызывать желание поделиться. "
-                + exclude_block +
-                f"\nВерни строго JSON:\n"
-                f'[{{"topic": "тема", "why": "почему актуально"}}]'
-            )
-        }]
-    )
-    import json, re
-    text = response.content[0].text
-    match = re.search(r'\[.*?\]', text, re.DOTALL)
-    if match:
-        try:
+    try:
+        response = client.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=512,
+            messages=[{
+                "role": "user",
+                "content": (
+                    f"Предложи 5 актуальных тем для постов психотерапевта{theme_context} "
+                    f"для площадки {platform_name}. Темы должны быть конкретными (5-10 слов), "
+                    f"резонировать с широкой аудиторией, вызывать желание поделиться. "
+                    + exclude_block +
+                    f"\nВерни строго JSON:\n"
+                    f'[{{"topic": "тема", "why": "почему актуально"}}]'
+                )
+            }]
+        )
+        text = response.content[0].text
+        match = re.search(r'\[.*?\]', text, re.DOTALL)
+        if match:
             return json.loads(match.group())
-        except Exception:
-            pass
+    except Exception as _e2:
+        print(f"[suggest_topics] fallback failed: {_e2}", file=sys.stderr)
+
     return []
 
 
