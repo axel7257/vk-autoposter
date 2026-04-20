@@ -230,8 +230,9 @@ def suggest_topics(platform: str, theme: str = "", exclude: list = None) -> list
         match = re.search(r'\[.*?\]', text, re.DOTALL)
         if match:
             return json.loads(match.group())
-    except Exception:
-        pass
+    except Exception as _e1:
+        import sys
+        print(f"[suggest_topics] web_search failed: {_e1}", file=sys.stderr)
 
     # Fallback — без веб-поиска, из знаний Claude
     response = client.messages.create(
